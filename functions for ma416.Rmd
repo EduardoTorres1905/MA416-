@@ -1,0 +1,135 @@
+---
+title: "Functions for MA416"
+output: pdf_document
+date: "2025-10-21"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## General functions for MA416
+
+## Monte Carlo
+
+```{r monte}
+setwd("C:/Users/super/Desktop/MA416 R-Code")
+
+# dont even bother with a function just simplify the code
+monte_carlo = function(n, seed, repititions){
+  set.seed(seed)
+  nmc = repititions
+  simstat = c()
+  
+  for (k in 1:nmc){
+    # Fill in with null hypothesis info
+    simsamp = rnorm()
+  
+  #define necessary variables (mean,median etc.)
+  
+  #calculate test stat (star_stat function)
+  
+  #store values
+    simstat = c(simstat, stat_a)
+  } 
+return(simstat)
+}
+alpha  = 0.05
+#critical value
+acrit_estimate = quantile(simstat, 1-alpha)
+acrit_estimate
+
+#p-value
+#must compare to data test stat
+test = 13.77 #ex test
+p_val = mean(simstat >= test)
+p_val
+```
+
+## Tests for Normality
+
+# Kolmogrov
+
+```{r kolmogrov}
+kolmogorov_test = function(data, mean, sd){
+  cdf_val = seq(1,length(data),1)/ (length(data) + 1)
+  sort = sort(data) 
+  psi = pnorm(sort, mean, sd)
+  kolo = max(abs((cdf_val - psi)))
+  return(kolo)
+}
+#critical value replace 0.092 with alpha
+crit_value = quantile(kolo, 1-0.092)
+```
+# Cramer
+
+```{r cramer}
+cramer_test = function(data, mean, sd){
+  cdf_val = seq(1,length(data),1)/ (length(data) + 1)
+  sort = sort(data) 
+  psi = pnorm(sort, mean, sd)
+  cramer = sum(abs((cdf_val - psi)^2))
+  return(cramer)
+}
+```
+# Anderson Darling
+
+```{r anderson}
+anderson_darling = function(n, sorted_data, mean, sd){
+Fx = seq(1, n, 1) / (n+1)
+psi_p2 = pnorm(sorted_data, mean, sd)
+ander_top = (Fx - psi_p2)**2
+ander_bottom = Fx * (1-Fx)
+ander_full = sum((ander_top) / ander_bottom)
+return(ander_full)
+}
+
+```
+
+## ANOVA
+to be continued...
+
+## Bartlett Test
+Test for homoscedasity, second ANOVA requirement
+```{r bartlett}
+#Bartlett test function (the input is the split data)
+bartlett = function(group){
+# Number of groups
+k = length(group)
+
+# All lengths
+all_len = sapply(group, length)
+#Sum of all() individual lengths
+N = sum(all_len)
+
+#Variance of all individual groups
+all_var = sapply(group, var)
+
+#Pooled Variance
+pool_top = sum((all_len-1) * all_var)
+pool_bottom = sum(all_len - 1)
+pooled = (pool_top) / pool_bottom
+
+#Bartlett Test Stat
+Bartlett_top = ((N - k) * log(pooled)) - sum((all_len-1) * log(all_var))
+Bartlett_bottom = (1 + (1/(3*(k-1))) * (sum((1/(all_len-1))) - 1/(N-k)))
+Bartlett = (Bartlett_top) / Bartlett_bottom
+return(Bartlett)
+}
+
+```
+
+## One factor ANOVA
+to be continued...
+
+## Two factor Anova
+to be continued...
+
+## RM ANOVA
+to be continued...
+
+## Mauchly Test 
+Test for Sphericity 
+
+To be continued...
+ 
